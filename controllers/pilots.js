@@ -6,5 +6,15 @@ module.exports = app => {
     app.get("/pilots", isUserLoggedIn, isTokenValid, (req, res, next) => {
         const pilots = pilotService.findAll();
         res.send(pilots);
+        return;
+    });
+
+    app.get("/pilots/:id", isUserLoggedIn, isTokenValid, (req, res, next) => {
+        const pilot = pilotService.findById(req.params.id);
+        if(pilot){
+            res.send(pilot);
+            return;
+        }
+        res.status(404).send(`pilot id: ${typeof req.params.id} not found`);
     });
 }
